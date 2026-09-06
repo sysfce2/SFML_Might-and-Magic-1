@@ -1,0 +1,19 @@
+This info describes Might and Magic 1 files structure. It is used for reverse engineering of MM1.
+Author: https://github.com/filasfilas
+
+
+mm.exe file:
+food market algorithm
+---------------------------------------------------------------------------------
+food market algorithm is a part of mm.exe.
+Offset of code is 0x1dfc.
+There are 5 food markets (one per town)
+
+Food cost (sorpigal, portsmit, algary, dusk, erliquin):
+0x5, 0xA, 0x14, 0xC8, 0x32
+ 
+Every character buys food upto 40 food if he/she has enough gold.
+
+interesting findings:
+**********************************
+a character always pays full price. Does not matter how many food he has. Even if he has food>=40  he pays full price for nothing.

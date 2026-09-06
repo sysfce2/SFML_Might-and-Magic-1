@@ -1,0 +1,88 @@
+This info describes Might and Magic 1 files structure. It is used for reverse engineering of MM1.
+Author: https://github.com/filasfilas
+
+
+mm.exe file:
+training algorithm
+---------------------------------------------------------------------------------
+training algorithm is a part of mm.exe.
+Offset of code is 0x2a3a.
+There are 5 trainings (one per town)
+
+level 200 is maximum. You can't train anymore.
+
+Traing cost for current level <8 (current level -1):
+PALADIN, ARCHER, SORCERER: 40, 75, 150, 300, 600, 1200, 2500
+KNIGHT, CLERIC, ROBBER: 25, 50, 100, 200, 400, 800, 1500
+
+Traing cost for current level >=8:
+PALADIN, ARCHER, SORCERER: 4000
+KNIGHT, CLERIC, ROBBER: 3000
+
+
+Required expirience for current level <=8:
+PALADIN, ARCHER, SORCERER: 2000<<(current level-2)
+KNIGHT, CLERIC, ROBBER: 1500<<(current level-2)
+
+Required expirience for current level >8:
+PALADIN, ARCHER, SORCERER: 2000<<7 + (current level -7) * 200 000
+KNIGHT, CLERIC, ROBBER: 1500<<7 + (current level-7) * 150 000
+
+
+character level upgrade
+-------------------------------------------------------
+level++
+age++
+if (age>220)  age=220   220years is MAX age. wow!
+robbery +=2
+
+HP maximum increase by class number (12 10 10 8 6 8)
+extraHP = rand (HP maximum increase) 
+
+actual HP correction based on endurance:
+if end>=40	extraHP +=10
+if end>=35	extraHP +=9
+if end>=30	extraHP +=8
+if end>=27	extraHP +=7
+if end>=24	extraHP +=6
+if end>=21	extraHP +=5
+if end>=19	extraHP +=4
+if end>=17	extraHP +=3
+if end>=15	extraHP +=2
+if end>=13	extraHP +=1
+if end>=9	extraHP +=0
+if end>=7	extraHP -=1
+if end>=5	extraHP -=2
+if end<5	extraHP -=3
+
+if extraHP<1	extraHP=1
+HP current +=extraHP
+HPmax = HP current
+
+
+character spell level upgrade
+-------------------------------------------------------
+if class==knight	no extra spell lvl
+if class==robber	no extra spell lvl
+
+if class==archer or palladin	
+if lvl<7	no extra spell lvl
+if lvl==7	gaind spell lvl 1
+if lvl==9	gaind spell lvl 2
+if lvl==11	gaind spell lvl 3
+if lvl==13	gaind spell lvl 4
+other lvls	no extra spell lvl
+
+if class == cleric or sorcerer	
+if lvl==3	gaind spell lvl 2
+if lvl==5	gaind spell lvl 3
+if lvl==7	gaind spell lvl 4
+if lvl==9	gaind spell lvl 5
+if lvl==11	gaind spell lvl 6
+if lvl==13	gaind spell lvl 7
+other lvls	no extra spell lvl
+
+
+
+
+

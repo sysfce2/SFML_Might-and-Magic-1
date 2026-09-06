@@ -1,0 +1,40 @@
+This info describes Might and Magic 1 files structure. It is used for reverse engineering of MM1.
+Author: https://github.com/filasfilas
+
+
+mm.exe file:
+temple algorithm
+---------------------------------------------------------------------------------
+temple algorithm is a part of mm.exe.
+Offset of code is 0x2cc6.
+There are 5 temples (one per town)
+
+Costs (sorpigal, portsmit, algary, dusk, erliquin):
+
+uncurse cost: 500 1000 1000 1012 1500
+restore alignment cost: 250 200 200 200 250
+donation cost: 100 100 100 25 200
+
+healing cost: 25 50 50 25 100
+healing cost (if bad condition): 200 500 500 200 1000
+healing cost (if eradicated): 2000 5000 5000 2000 8000
+
+
+uncurse algorithm:
+Delete all equipped cursed items. Doesn't delete unequipped cursed items.
+
+restore alignment  algorithm:
+current alignment = initial alignment
+character parameter 0x6f  = 0x8 or 0x10 or 0x18  (depends on initial alignment)
+
+healing eradicated algorithm:
+age=+10,
+endurance=-1, 
+endurance current=-1
+
+donation algorithm:
+get character donation parameter 0x6e
+donation bit by town number:  0x1 0x2 0x4 0x8 0x10
+set character donation parameter 0x6e  |= donation bit
+if (random 0-15) == 10  all party protection = 0x4b
+

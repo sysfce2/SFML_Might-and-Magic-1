@@ -54,8 +54,8 @@ Bytes info
 6a-6b	missile damage
 6c	thievery
 6d
-6e
-6f
+6e	donation flags
+6f	alignment change
 70	quest flags-0
 71	quest flags-1
 72	quest flags-2
