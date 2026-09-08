@@ -31,5 +31,5 @@ class CharacterDetailState : public State
 		int _charId;
         	//sf::Sprite  _background;
 
-		sf::Text	_txtLabel[LABELS_COUNT];
+		std::vector<sf::Text>	_txtLabel;
 };

@@ -1,8 +1,18 @@
-cmake_minimum_required(VERSION 3.10)
-project (mm1 VERSION 0.0.1)
+cmake_minimum_required(VERSION 3.28)
+project (F-MM1 VERSION 0.1.0 LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_STANDARD_REQUIRED True)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_CXX_STANDARD 17)
+
+#SFML section
+include(FetchContent)
+FetchContent_Declare(SFML
+    GIT_REPOSITORY https://github.com/SFML/SFML.git
+    GIT_TAG 3.1.0
+    GIT_SHALLOW ON
+    EXCLUDE_FROM_ALL
+    SYSTEM)
+FetchContent_MakeAvailable(SFML)
 
 
 file(GLOB SRC_FILES
@@ -16,8 +26,7 @@ file(GLOB SRC_FILES
 	model/maps/*.cpp
 	)
 
-find_package(SFML 2.5 COMPONENTS system window graphics audio REQUIRED)
-link_libraries(-lsfml-graphics -lsfml-system -lsfml-window -lsfml-audio)
+add_executable(${PROJECT_NAME} ${SRC_FILES})
 
-
-add_executable(F-MM1 ${SRC_FILES})
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
+target_link_libraries(${PROJECT_NAME} PRIVATE SFML::Graphics SFML::Window SFML::System SFML::Audio SFML::Network)

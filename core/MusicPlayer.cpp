@@ -17,7 +17,7 @@ void MusicPlayer::play(Music::ID theme){
         throw std::runtime_error("Music " + filename + " could not be loaded.");
     }
     _music.setVolume(_volume);
-    _music.setLoop(true);
+    _music.setLooping(true);
     _music.play();
 }
 

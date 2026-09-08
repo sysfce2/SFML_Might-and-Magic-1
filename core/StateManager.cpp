@@ -84,7 +84,7 @@ void StateManager::draw(float dt) {
 	}
 }
 
-void StateManager::handleInput(sf::Event& event) {
+void StateManager::handleInput(const sf::Event& event) {
 //    for (StatePtr &state:_stateStack)
       _stateStack.back() -> handleInput(event);
 }

@@ -24,7 +24,7 @@ Face::Face(sf::RenderWindow* target, GlobalDataRef gData, int number)
 	Y = window->getSize().y - deltaY*(mShape.getSize().y + 30);
 	//Y=200.0;
 
-	mShape.setPosition(X, Y);
+	mShape.setPosition({X, Y});
     mShape.setTexture(&(gData -> mAssets.getTexture(Textures::Face)), true);
 	//mShape.setFillColor(sf::Color::Black);
 	//mShape.setOutlineColor(sf::Color::Green);
@@ -38,6 +38,7 @@ void Face::setCallback(std::function<void(int)> callback)
 
 void Face::handleInput()
 {
+/*
 	if (isClicked (sf::Mouse::Left)){
 		//mCallback(_number);
 		//std::cout<<_number<<std::endl;
@@ -46,6 +47,7 @@ void Face::handleInput()
 			_gData -> mStates.addState(StatePtr (new CharacterDetailState(_gData, character)));
 		}
 	}
+*/
 }
 
 bool Face::isClicked(sf::Mouse::Button button)
@@ -54,7 +56,7 @@ bool Face::isClicked(sf::Mouse::Button button)
 	{
 		int x = mShape.getPosition().x;
 		int y = mShape.getPosition().y;
-		sf::IntRect buttonRect(x, y, mShape.getSize().x, mShape.getSize().y);
+		sf::IntRect buttonRect({x, y}, {mShape.getSize().x, mShape.getSize().y});
 
 		if(buttonRect.contains(sf::Mouse::getPosition(*window)))
 		{
@@ -67,7 +69,7 @@ bool Face::isClicked(sf::Mouse::Button button)
 void Face::draw()
 {
 	//window.draw(mSprite);
-	window->draw(mShape);
+	//window->draw(mShape);
 	//window->draw(mText);
 }
 

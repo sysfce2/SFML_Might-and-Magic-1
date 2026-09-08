@@ -2,7 +2,7 @@
 #include "GameState.h"
 #include "ViewAllCharState.h"
 #include "../gui/Utility.h"
-//#include <iostream>
+#include <iostream>
 
 MenuState::MenuState(GlobalDataRef gData) 
 : gData(gData)
@@ -14,71 +14,70 @@ MenuState::MenuState(GlobalDataRef gData)
 void MenuState::init() {
     int _screen_width = gData -> mWindow.getSize().x;
     int _screen_height = gData -> mWindow.getSize().y;
-	_background.setTexture(gData -> mAssets.getTexture(Textures::MainMenu));
-	_background.setOrigin(_background.getTextureRect().width/2, _background.getTextureRect().height/2);
-	_background.setPosition(_screen_width/2, _screen_height/2);
+
+    sf::Sprite _sprite(gData -> mAssets.getTexture(Textures::MainMenu));
+	_background.push_back(_sprite);
+	_background[0].setOrigin({_background[0].getTextureRect().size.x/2, _background[0].getTextureRect().size.y/2});
+	_background[0].setPosition({_screen_width/2, _screen_height/2});
 	sf::Vector2f scale;
-	scale.y = 1.0*_screen_height/ (_background.getTextureRect().height);
+	scale.y = 1.0*_screen_height/ (_background[0].getTextureRect().size.y);
 	scale.x = scale.y;
-	_background.setScale(scale);
+	_background[0].setScale(scale);
 
 	//prepare buttons
-	sf::Sprite sprite;
-	sf::Text text;
+	sf::Sprite sprite(gData -> mAssets.getTexture(Textures::MenuButton));
+	sf::Text text(gData-> mAssets.getFont(Fonts::Main));
 
-	sprite.setTexture(gData -> mAssets.getTexture(Textures::MenuButton));
-    sprite.setScale(1.5, 0.8);
+    sprite.setScale({1.5, 0.8});
 	centerOrigin(sprite);
-
-	text.setFont(gData-> mAssets.getFont(Fonts::Main));
 
 	//create new character
 	text.setString(gData -> mStringsDB.getString(CreateNewCharacter));
 	centerOrigin(text);
-	newCharBtn = Button (sprite, text, sf::Vector2f(_screen_width/2,100));
+    _buttons.push_back(Button (sprite, text, sf::Vector2f(_screen_width/2,100)));
 
 	//view all character
 	text.setString(gData -> mStringsDB.getString(ViewAllCharacters));
 	centerOrigin(text);
-	viewAllBtn = Button (sprite, text, sf::Vector2f(_screen_width/2,200));
+    _buttons.push_back(Button (sprite, text, sf::Vector2f(_screen_width/2,200)));
 
 	//go to town
 	text.setString(gData -> mStringsDB.getString(GoToTown));
 	centerOrigin(text);
-	playBtn = Button (sprite, text, sf::Vector2f(_screen_width/2,300));
+    _buttons.push_back(Button (sprite, text, sf::Vector2f(_screen_width/2,300)));
 
 	//exit button
 	text.setString(gData -> mStringsDB.getString(ExitGame));
 	centerOrigin(text);
-	exitBtn = Button (sprite, text, sf::Vector2f(_screen_width/2,400));
+    _buttons.push_back(Button (sprite, text, sf::Vector2f(_screen_width/2,400)));
 }
 
 void MenuState::handleInput(const sf::Event& event)
 {
-	if (viewAllBtn.isClicked(sf::Mouse::Left, gData -> mWindow))	{
+	if (_buttons[1].isClicked(sf::Mouse::Button::Left, gData -> mWindow))	{
 		gData -> mStates.addState(StatePtr (new ViewAllCharState(gData)));
 	}
 /*
-	if (newCharBtn.isClicked(sf::Mouse::Left, gData -> mWindow))	{
+	if (_buttons[0].isClicked(sf::Mouse::Button::Left, gData -> mWindow))	{
 		gData -> mStates.addState(StatePtr (new CreateCharState(gData)));
 	}
 
 */
-	if (playBtn.isClicked(sf::Mouse::Left, gData -> mWindow))	{
+	if (_buttons[2].isClicked(sf::Mouse::Button::Left, gData -> mWindow))	{
 		gData -> mStates.replaceState(StatePtr (new GameState(gData, 1)));
 	}
-	if (exitBtn.isClicked(sf::Mouse::Left, gData -> mWindow)) {
+	if (_buttons[3].isClicked(sf::Mouse::Button::Left, gData -> mWindow)) {
 		gData -> mStates.removeState();
 		gData -> mMusic.stop();
 	}
 	
 //temporary town selector
-	if (event.type == sf::Event::KeyReleased) {
-		if ((event.key.code >= sf::Keyboard::Num1)&&(event.key.code <= sf::Keyboard::Num5)){
-			gData -> mStates.replaceState(StatePtr(new GameState(gData, (event.key.code-26) )));
+	if (const auto* keyPressed = event.getIf<sf::Event::KeyPressed>()) {
+		if ((keyPressed->scancode >= sf::Keyboard::Scancode::Num1)&&(keyPressed->scancode <= sf::Keyboard::Scancode::Num5)){
+			gData -> mStates.replaceState(StatePtr(new GameState(gData, (int(keyPressed->scancode)-26) )));
 		}
 		//temporary for test
-		else if ((event.key.code == sf::Keyboard::Num9)){
+		else if ((keyPressed->scancode == sf::Keyboard::Scancode::Num9)){
 			gData -> mStates.replaceState(StatePtr(new GameState(gData, 24 )));
 		}
 	}
@@ -89,12 +88,11 @@ void MenuState::update (float dt)
 {}
 
 void MenuState::draw(float dt) {
-	gData -> mWindow.draw(_background);
+	gData -> mWindow.draw(_background[0]);
 
-	playBtn.draw(gData -> mWindow);
-	newCharBtn.draw(gData -> mWindow);
-    	viewAllBtn.draw(gData -> mWindow);
-	exitBtn.draw(gData -> mWindow);
+    for(int i=0; i<4; i++){
+        _buttons[i].draw(gData -> mWindow);
+    }
 }
 
 void MenuState::stop ()

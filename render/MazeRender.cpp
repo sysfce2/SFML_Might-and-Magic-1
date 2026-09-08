@@ -20,24 +20,26 @@ MazeRender::MazeRender (sf::RenderWindow* target, int viewWidth, int viewHeight)
 ,_viewWidth(viewWidth)
 ,_viewHeight(viewHeight)
 {
-    _textures[0].loadFromFile("media/images/walls/wall01.png"); 
-    _textures[1].loadFromFile("media/images/walls/wall02.png"); 
-    _textures[2].loadFromFile("media/images/walls/wall03.png"); 
-    _textures[3].loadFromFile("media/images/walls/wall04.png"); 
-    _textures[4].loadFromFile("media/images/walls/wall05.png"); 
-    _textures[5].loadFromFile("media/images/walls/wall06.png"); 
-    _textures[6].loadFromFile("media/images/walls/wall07.png"); 
-    _textures[7].loadFromFile("media/images/walls/wall08.png"); 
-    _textures[8].loadFromFile("media/images/walls/wall09.png"); 
-    _textures[9].loadFromFile("media/images/walls/wall10.png"); 
-    _textures[10].loadFromFile("media/images/walls/wall11.png"); 
-    _textures[11].loadFromFile("media/images/walls/wall12.png"); 
-    _textures[12].loadFromFile("media/images/walls/wall13.png"); 
-    _textures[13].loadFromFile("media/images/walls/wall14.png"); 
-    _textures[14].loadFromFile("media/images/walls/wall15.png"); 
-    _textures[15].loadFromFile("media/images/walls/wall16.png"); 
-    _textures[16].loadFromFile("media/images/walls/wall17.png"); 
-    _textures[17].loadFromFile("media/images/walls/wall18.png"); 
+
+    bool res;
+    res= _textures[0].loadFromFile("media/images/walls/wall01.png"); 
+    res= _textures[1].loadFromFile("media/images/walls/wall02.png"); 
+    res= _textures[2].loadFromFile("media/images/walls/wall03.png"); 
+    res= _textures[3].loadFromFile("media/images/walls/wall04.png"); 
+    res= _textures[4].loadFromFile("media/images/walls/wall05.png"); 
+    res= _textures[5].loadFromFile("media/images/walls/wall06.png"); 
+    res= _textures[6].loadFromFile("media/images/walls/wall07.png"); 
+    res= _textures[7].loadFromFile("media/images/walls/wall08.png"); 
+    res= _textures[8].loadFromFile("media/images/walls/wall09.png"); 
+    res= _textures[9].loadFromFile("media/images/walls/wall10.png"); 
+    res= _textures[10].loadFromFile("media/images/walls/wall11.png"); 
+    res= _textures[11].loadFromFile("media/images/walls/wall12.png"); 
+    res= _textures[12].loadFromFile("media/images/walls/wall13.png"); 
+    res= _textures[13].loadFromFile("media/images/walls/wall14.png"); 
+    res= _textures[14].loadFromFile("media/images/walls/wall15.png"); 
+    res= _textures[15].loadFromFile("media/images/walls/wall16.png"); 
+    res= _textures[16].loadFromFile("media/images/walls/wall17.png"); 
+    res= _textures[17].loadFromFile("media/images/walls/wall18.png"); 
 
 }
 
@@ -68,6 +70,8 @@ void MazeRender::render (float posX, float posY, float dirX, float dirY, float p
 	int stepX, stepY;
 	float rayDirX, rayDirY, deltaDistX, deltaDistY, sideDistX, sideDistY;
 
+
+    sf::Sprite _sprite(_mapTextures[0]);
 
 	for (int scanLine=0; scanLine<=_viewWidth; scanLine++){
 		float scanX = (2.0* scanLine) / _viewWidth - 1;
@@ -147,9 +151,9 @@ void MazeRender::render (float posX, float posY, float dirX, float dirY, float p
 
         	_sprite.setTexture(_mapTextures[wallSpriteId-1]);
 		sf::Vector2u textureSize = _mapTextures[wallSpriteId-1].getSize();
-        	_sprite.setTextureRect(sf::IntRect(int(wallSpriteShift*textureSize.x), 0, 1, textureSize.y));
-		_sprite.setOrigin(0,0);
-        	_sprite.setPosition(scanLine, _viewHeight/2-length/2);  
+        	_sprite.setTextureRect(sf::IntRect({int(wallSpriteShift*textureSize.x), 0}, {1, textureSize.y}));
+		_sprite.setOrigin({0,0});
+        	_sprite.setPosition({scanLine, _viewHeight/2-length/2});  
         	_sprite.setScale (sf::Vector2f(1.0, length/96));
         	_window->draw(_sprite);
 

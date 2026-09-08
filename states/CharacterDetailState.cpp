@@ -9,7 +9,6 @@ CharacterDetailState::CharacterDetailState (GlobalDataRef gData, Character* curr
 , _character(currentCharacter)
 {
 	_charId = 0;
-	sf::Text txt;
 
 	//int ChrSize [] = {16, 16, 16}; //font sizes	
 	int textX [] = {10, 50, 200, 300, 400, 500,  10, 10, 10, 10, 10, 10, 10, 10,
@@ -21,12 +20,15 @@ CharacterDetailState::CharacterDetailState (GlobalDataRef gData, Character* curr
 			300, 320, 340, 360, 380, 400, 300, 320, 340, 360, 380, 400,
 			460, 480, 520, 460, 480, 500, 520, 460, 480, 500, 520}; //Y positions
 
+
+	sf::Text txt(gData-> mAssets.getFont(Fonts::Main));
+	txt.setFont(gData-> mAssets.getFont(Fonts::Main));
+	txt.setFillColor(sf::Color(255, 255, 255));
+	txt.setCharacterSize(16);
 	for (int i=0; i<LABELS_COUNT; i++)
 	{
-		_txtLabel[i].setFont(gData-> mAssets.getFont(Fonts::Main));
-		_txtLabel[i].setColor(sf::Color(255, 255, 255));
-		_txtLabel[i].setCharacterSize(16);
-		_txtLabel[i].setPosition(textX[i], textY[i]);
+		txt.setPosition({textX[i], textY[i]});
+        _txtLabel.push_back(txt);
 	}
 
 	_txtLabel[37].setString ("'Q' - quick reference");	
@@ -59,31 +61,31 @@ void CharacterDetailState::init() {
 
 void CharacterDetailState::handleInput(const sf::Event& event)
 {
-	if (event.type == sf::Event::KeyPressed)
+	if (const auto* keyPressed = event.getIf<sf::Event::KeyPressed>())
         {
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+		if (keyPressed->scancode == sf::Keyboard::Scancode::Escape) {
 			gData -> mStates.removeState();
 		}
-		else if ((event.key.code >= sf::Keyboard::Num1)&&(event.key.code<=sf::Keyboard::Num6)) {
-			_charId = int (event.key.code-27);
+		else if ((keyPressed->scancode >= sf::Keyboard::Scancode::Num1)&&(keyPressed->scancode <=sf::Keyboard::Scancode::Num6)) {
+			_charId = int (keyPressed->scancode) -27;
 			changeCharacter (_charId);
 		}
-		else if (event.key.code == sf::Keyboard::R) {
+		else if (keyPressed->scancode == sf::Keyboard::Scancode::R) {
 			gData -> mStates.addState(StatePtr(new ItemState(gData, _character, "Remove")));
 		}
-		else if (event.key.code == sf::Keyboard::D) {
+		else if (keyPressed->scancode == sf::Keyboard::Scancode::D) {
 			gData -> mStates.addState(StatePtr(new ItemState(gData, _character, "Drop")));
 		}
-		else if (event.key.code == sf::Keyboard::E) {
+		else if (keyPressed->scancode == sf::Keyboard::Scancode::E) {
 			gData -> mStates.addState(StatePtr(new ItemState(gData, _character, "Equip")));
 		}
-		else if (event.key.code == sf::Keyboard::S) {
+		else if (keyPressed->scancode == sf::Keyboard::Scancode::S) {
 			gData -> mStates.addState(StatePtr(new ItemState(gData, _character, "Share")));
 		}
-		else if (event.key.code == sf::Keyboard::G) {
+		else if (keyPressed->scancode == sf::Keyboard::Scancode::G) {
 			gData -> mStates.addState(StatePtr(new ItemState(gData, _character, "Gather")));
 		}
-		else if (event.key.code == sf::Keyboard::T) {
+		else if (keyPressed->scancode == sf::Keyboard::Scancode::T) {
 			gData -> mStates.addState(StatePtr(new ItemState(gData, _character, "Trade")));
 		}
 	}

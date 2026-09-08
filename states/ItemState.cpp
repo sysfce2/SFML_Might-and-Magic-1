@@ -17,13 +17,17 @@ ItemState::ItemState (GlobalDataRef gData, Character* character, std::string ite
 
 	int textX [] = {350, 350, 350, 350}; //X positions
 	int textY [] = {460, 480, 500, 520}; //Y positions
+
+
+    sf::Text txt(gData-> mAssets.getFont(Fonts::Main));
+	txt.setFillColor(sf::Color(255, 255, 255));
+	txt.setCharacterSize(16);
 	for (int i=0; i<10; i++)
 	{
-		_txtLabel[i].setFont(gData-> mAssets.getFont(Fonts::Main));
-		_txtLabel[i].setColor(sf::Color(255, 255, 255));
-		_txtLabel[i].setCharacterSize(16);
-		_txtLabel[i].setPosition(textX[i], textY[i]);
+   		txt.setPosition({textX[i], textY[i]});
+        _txtLabel.push_back(txt);
 	}
+
 	if (_itemActionType == "Remove") _txtLabel[0].setString ("Remove what item? '1-6'");
 	if (_itemActionType == "Drop") _txtLabel[0].setString ("Discard what item? 'A-F'");
 	if (_itemActionType == "Equip") _txtLabel[0].setString ("Equip what item? 'A-F'");
@@ -44,46 +48,46 @@ void ItemState::init() {
 
 void ItemState::handleInput(const sf::Event& event)
 {
-	if (event.type == sf::Event::KeyPressed)
+	if (const auto* keyPressed = event.getIf<sf::Event::KeyPressed>())
         {
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+		if (keyPressed->scancode == sf::Keyboard::Scancode::Escape) {
 			gData -> mStates.removeState();
 		}
-		else if ((_itemActionType=="Remove")&&(event.key.code >= sf::Keyboard::Num1)&&(event.key.code<=sf::Keyboard::Num6)) {
-			int itemNum = int (event.key.code-27);
+		else if ((_itemActionType=="Remove")&&(keyPressed->scancode >= sf::Keyboard::Scancode::Num1)&&(keyPressed->scancode <= sf::Keyboard::Scancode::Num6)) {
+			int itemNum = int (keyPressed->scancode)-27;
 			_actionDone = (gData->mGameModel.removeItem(_character, itemNum));
 		}
-		else if ((_itemActionType=="Drop")&&(event.key.code >= sf::Keyboard::A)&&(event.key.code<=sf::Keyboard::F)) {
-			int itemNum = int (event.key.code);
+		else if ((_itemActionType=="Drop")&&(keyPressed->scancode >= sf::Keyboard::Scancode::A)&&(keyPressed->scancode<=sf::Keyboard::Scancode::F)) {
+			int itemNum = int (keyPressed->scancode);
 			gData->mGameModel.dropItem(_character, itemNum);
 			_actionDone = true;
 		}
-		else if ((_itemActionType=="Equip")&&(event.key.code >= sf::Keyboard::A)&&(event.key.code<=sf::Keyboard::F)) {
-			int itemNum = int (event.key.code);
+		else if ((_itemActionType=="Equip")&&(keyPressed->scancode >= sf::Keyboard::Scancode::A)&&(keyPressed->scancode<=sf::Keyboard::Scancode::F)) {
+			int itemNum = int (keyPressed->scancode);
 			_actionDone = (gData->mGameModel.equipItem(_character, itemNum));
 		}
 		else if (_itemActionType=="Gather") {
 			std::string resource;
-			if (event.key.code == sf::Keyboard::G) { resource = "gold"; _actionDone = true;}
-			else if (event.key.code == sf::Keyboard::E) { resource = "gems"; _actionDone = true;}
-			else if (event.key.code == sf::Keyboard::F) { resource = "food"; _actionDone = true;}
+			if (keyPressed->scancode == sf::Keyboard::Scancode::G) { resource = "gold"; _actionDone = true;}
+			else if (keyPressed->scancode == sf::Keyboard::Scancode::E) { resource = "gems"; _actionDone = true;}
+			else if (keyPressed->scancode == sf::Keyboard::Scancode::F) { resource = "food"; _actionDone = true;}
 			_character->addStock(resource, gData->mGameModel._party.gatherAll(resource)); 
 
 		}
 		else if (_itemActionType=="Share") {
 			std::string resource;
-			if (event.key.code == sf::Keyboard::G) { resource = "gold"; _actionDone = true;}
-			else if (event.key.code == sf::Keyboard::E) { resource = "gems"; _actionDone = true;}
-			else if (event.key.code == sf::Keyboard::F) { resource = "food"; _actionDone = true;}
+			if (keyPressed->scancode == sf::Keyboard::Scancode::G) { resource = "gold"; _actionDone = true;}
+			else if (keyPressed->scancode == sf::Keyboard::Scancode::E) { resource = "gems"; _actionDone = true;}
+			else if (keyPressed->scancode == sf::Keyboard::Scancode::F) { resource = "food"; _actionDone = true;}
 			gData->mGameModel._party.share(resource);
 		}
-		else if ((_itemActionType=="Trade")&&(event.key.code >= sf::Keyboard::A)&&(event.key.code<=sf::Keyboard::F)) {
-			_itemNum = int (event.key.code);
+		else if ((_itemActionType=="Trade")&&(keyPressed->scancode >= sf::Keyboard::Scancode::A)&&(keyPressed->scancode<=sf::Keyboard::Scancode::F)) {
+			_itemNum = int (keyPressed->scancode);
 			int _itemTransferID = (_character->getBackpack(_itemNum));
 			if (_itemTransferID != 0) _itemActionType = "Trade-step2";
 		}
-		else if ((_itemActionType=="Trade-step2")&&(event.key.code >= sf::Keyboard::Num1)&&(event.key.code<=sf::Keyboard::Num6)) {
-			Character* newCharacter = gData->mGameModel._party.getCharacter(int (event.key.code-27));
+		else if ((_itemActionType=="Trade-step2")&&(keyPressed->scancode >= sf::Keyboard::Scancode::Num1)&&(keyPressed->scancode<=sf::Keyboard::Scancode::Num6)) {
+			Character* newCharacter = gData->mGameModel._party.getCharacter(int (keyPressed->scancode)-27);
 			gData->mGameModel.transferItem(_character,  newCharacter, _itemNum);
 			_actionDone = true;
 		}

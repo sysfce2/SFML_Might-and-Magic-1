@@ -1,9 +1,10 @@
 #include "Button.h"
 #include "Utility.h"
-
+/*
 Button::Button()
 {
 }
+*/
 
 Button::Button(sf::Sprite sprite, sf::Text text, sf::Vector2f position)
 :mSprite(sprite)
@@ -19,10 +20,10 @@ void Button::setSize(sf::Vector2f size){
 	mSize=size;
 	sf::Vector2f mOldScale = mSprite.getScale();
 	sf::Vector2f mOldSize, mNewScale;
-	mOldSize.x = mSprite.getGlobalBounds().width;
-	mOldSize.y = mSprite.getGlobalBounds().height;
-	mNewScale.x = size.x / mSprite.getGlobalBounds().width;
-	mNewScale.y = size.y / mSprite.getGlobalBounds().height;
+	mOldSize.x = mSprite.getGlobalBounds().size.x;
+	mOldSize.y = mSprite.getGlobalBounds().size.y;
+	mNewScale.x = size.x / mSprite.getGlobalBounds().size.x;
+	mNewScale.y = size.y / mSprite.getGlobalBounds().size.y;
 	mSprite.setScale(mNewScale);
 }
 
@@ -43,7 +44,7 @@ bool Button::isClicked(sf::Mouse::Button button, const sf::RenderWindow& window)
 	{
 		int x = mSprite.getPosition().x - mSprite.getOrigin().x;
 		int y = mSprite.getPosition().y - mSprite.getOrigin().y;
-		sf::IntRect buttonRect(x, y, mSprite.getGlobalBounds().width, mSprite.getGlobalBounds().height);
+		sf::IntRect buttonRect({x, y}, {mSprite.getGlobalBounds().size.x, mSprite.getGlobalBounds().size.y});
 
 		if(buttonRect.contains(sf::Mouse::getPosition(window)))
 		{

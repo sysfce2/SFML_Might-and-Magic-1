@@ -34,7 +34,7 @@ class GameState : public State
 		GlobalDataRef	gData;
 		MazeRender  _mazeRender;
 		//MessageBox  _msgBox;
-		GUI			_gui;
+		//GUI			_gui;
 
 		enum GameStateMode {STANDING, TURNING, MOVING};
 		GameStateMode	_mode;

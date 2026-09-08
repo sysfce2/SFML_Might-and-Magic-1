@@ -1,4 +1,5 @@
 #pragma once
+#include<vector>
 
 #include "../core/State.h"
 #include "../core/Application.h"
@@ -17,13 +18,13 @@ class ViewAllCharState : public State
        		void handleInput(const sf::Event& event);
         	void update (float dt);
         	void draw(float dt );
-		void stop();
+		    void stop();
         
 	private:
 		GlobalDataRef   gData;
 
         	//sf::Sprite  _background;
 
-		sf::Text	titleText[3];
-		sf::Text	charInfoText[18];
+		std::vector<sf::Text>	titleText;
+		std::vector<sf::Text>	charInfoText;
 };

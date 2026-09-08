@@ -1,4 +1,5 @@
 #pragma once
+#include<vector>
 
 #include "../Definitions.h"
 #include "../core/State.h"
@@ -10,22 +11,22 @@ class TitleState : public State {
 	public:
 		TitleState (GlobalDataRef gData);
 
-        	void init();
-        	void stop();
-        	void handleInput(const sf::Event& event);
-        	void update (float dt);
-        	void draw(float dt );
+        void init();
+        void stop();
+        void handleInput(const sf::Event& event);
+        void update (float dt);
+        void draw(float dt );
 
 	private:
 		GlobalDataRef	gData;
 		float timer;
 		int _currentSlide;
-		const float SLIDE_DELAY = 10.0; //time to show one slide
+		const float SLIDE_DELAY = 3.0; //time to show one slide
 		void loadData();
 		void unloadData();
-		sf::Sprite _background;
-        	sf::Sprite  _slides[10];
+        std::vector<sf::Sprite> _background;
+        std::vector<sf::Sprite>  _slides;
 		void nextSlide();
 
-		sf::Text	titleText[4];
+		std::vector<sf::Text>	titleText;
 };

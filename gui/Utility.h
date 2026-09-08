@@ -9,5 +9,5 @@ template<typename T>
 void centerOrigin(T& obj)
 {
 	sf::FloatRect bounds = obj.getLocalBounds();
-	obj.setOrigin(bounds.width / 2, bounds.height / 2);
+	obj.setOrigin({bounds.size.x / 2, bounds.size.y / 2});
 }

@@ -12,7 +12,6 @@ GameModel::GameModel()
 	//temporary Sorpigal start
 	_posX = 8;
 	_posY = 3;
-	//_mapId = 1;
 	_direction = N;
 	_darkness=false;
 

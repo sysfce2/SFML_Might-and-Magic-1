@@ -6,11 +6,11 @@
 GUI::GUI(sf::RenderWindow* target, GlobalDataRef gData)
 :window (target)
 ,_gData(gData)
-, _msgBox(window, window->getSize().x,  window->getSize().y)
+, _msgBox(window, window->getSize().x,  window->getSize().y, &(gData-> mAssets.getFont(Fonts::Main)))
 {
-	_msgBox.setFont(&(gData-> mAssets.getFont(Fonts::Main)));
+	//_msgBox.setFont(&(gData-> mAssets.getFont(Fonts::Main)));
 
-	gData -> mAssets.loadTexture(Textures::Face, "../media/images/gui/fff.png");
+	//gData -> mAssets.loadTexture(Textures::Face, "../media/images/gui/fff.png");
 	for (int i=0; i<6; i++){
 		_faces.push_back(new Face(window, _gData, i));
 	}		
@@ -33,11 +33,13 @@ void GUI::draw()
 
 void GUI::handleInput()
 {
+/*
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
 		for (int i=0; i<6; i++){
 			_faces[i]->handleInput();
 		}
 	}
+*/
 }
 
 void GUI::update()

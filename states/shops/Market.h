@@ -1,4 +1,5 @@
 #pragma once
+#include<vector>
 
 #include "../../core/State.h"
 #include "../../core/Application.h"
@@ -13,10 +14,10 @@ class MarketState : public State
 	public:
 		MarketState (GlobalDataRef gData);
 
-        	void init();
-       		void handleInput(const sf::Event& event);
-        	void update (float dt);
-        	void draw(float dt );
+        void init();
+       	void handleInput(const sf::Event& event);
+        void update (float dt);
+        void draw(float dt );
 		void stop();
         
 	private:
@@ -24,6 +25,6 @@ class MarketState : public State
 
         	//sf::Sprite  _background;
 
-		sf::Text	titleText[3];
-		sf::Text	charInfoText[18];
+		std::vector<sf::Text>	titleText;
+		std::vector<sf::Text>	charInfoText;
 };

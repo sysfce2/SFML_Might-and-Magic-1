@@ -8,7 +8,7 @@ class Face
 {
 	public:
 
-			Face(sf::RenderWindow* target, GlobalDataRef gData, int number);
+		Face(sf::RenderWindow* target, GlobalDataRef gData, int number);
 		void setCallback(std::function<void(int)> callback);
 		void draw();
 		void handleInput();

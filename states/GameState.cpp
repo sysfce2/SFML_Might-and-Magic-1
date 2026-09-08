@@ -7,45 +7,47 @@
 GameState::GameState(GlobalDataRef gData, int townId) 
 : gData(gData)
 , _mazeRender(&(gData -> mWindow), gData -> mWindow.getSize().x,  gData -> mWindow.getSize().y)
-, _gui(&(gData -> mWindow), gData)
+//, _gui(&(gData -> mWindow), gData)
 {
 	_mode = STANDING;
-	_startTownId = townId-1;	
+	_startTownId = townId;	
 	//gData -> mAssets.loadTexture(Textures::MenuButton, "media/images/gui/Button.png");
-
-
+ 
 	gData -> mMusic.play(Music::TownTheme);
 }
 
 void GameState::init() {
 ///////////////////
+
+    std::cout<<"gm init"<<std::endl;
 	gData -> mGameModel.selectMap(_startTownId);
 	_mazeRender.chooseMaze(gData -> mGameModel._map.getWalls(), _startTownId);
 	_xPos = (gData -> mGameModel.getPosX()) +0.5;
 	_yPos = (gData -> mGameModel.getPosY()) +0.5;
 	directionToVector(gData -> mGameModel.getDirection());
+
 }
 
 void GameState::handleInput(const sf::Event& event)
 {
 	if ((_mode == MOVING)||(_mode == TURNING)) return;
-	if (event.type == sf::Event::KeyPressed)
+	if (const auto* keyPressed = event.getIf<sf::Event::KeyPressed>())
     {
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {turn (1); return;}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){turn (-1); return;}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) { move(1); return;}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) { move(-1); return;}
+		if (keyPressed->scancode == sf::Keyboard::Scancode::Left) {turn (1); return;}
+		if (keyPressed->scancode == sf::Keyboard::Scancode::Right){turn (-1); return;}
+		if (keyPressed->scancode == sf::Keyboard::Scancode::Up) { move(1); return;}
+		if (keyPressed->scancode == sf::Keyboard::Scancode::Down) { move(-1); return;}
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) { 
+		if (keyPressed->scancode == sf::Keyboard::Scancode::Q) { 
 			gData -> mStates.addState(StatePtr (new QuickRefState(gData)));
 			return;
 		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) { 
+		if (keyPressed->scancode == sf::Keyboard::Scancode::R) { 
 			gData -> mGameModel.rest();
 			return;
 		}
 	}
-	_gui.handleInput();
+	//_gui.handleInput();
 }
 
 void GameState::update (float dt)
@@ -64,7 +66,7 @@ void GameState::update (float dt)
 			_mode = STANDING; 
 			if(_turnDirection == -1)	{gData -> mGameModel.turnRight();}
 			else if (_turnDirection == 1)	{gData -> mGameModel.turnLeft();}
-			_gui.makeStep();
+			//_gui.makeStep();
 		}
 		return;
 	}
@@ -78,7 +80,7 @@ void GameState::update (float dt)
 			//else if (deltaMove == -1) {gData -> mGameModel.moveBackward();}
 			gData -> mGameModel.setPosition (_targetX, _targetY);
 			_mazeRender.chooseMaze(gData -> mGameModel._map.getWalls(), gData -> mGameModel.getMapId());
-			_gui.makeStep();
+			//_gui.makeStep();
 		}
 		return;
 	}
@@ -87,13 +89,13 @@ void GameState::update (float dt)
 	_yPos = (gData -> mGameModel.getPosY()) +0.5;
 	directionToVector(gData -> mGameModel.getDirection());
 
-	_gui.update();
+	//_gui.update();
 }
 
 void GameState::draw(float dt) {
 	//_mazeRender.render(_xPos, _yPos, _angle);
 	_mazeRender.render(_xPos, _yPos, _dirX, _dirY, _planeX, _planeY);
-	_gui.draw();
+	//_gui.draw();
 }
 
 void GameState::turn (int turnDir){

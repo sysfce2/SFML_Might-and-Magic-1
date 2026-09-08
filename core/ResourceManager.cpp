@@ -10,7 +10,7 @@ void ResourceManager::loadTexture (Textures::ID name, const std::string& filenam
 
 void ResourceManager::loadFont (Fonts::ID name, const std::string& filename){
 	sf::Font font;
-	if (font.loadFromFile(filename)) {
+	if (font.openFromFile(filename)) {
 		_mFonts[name]=font;
 	}
 }

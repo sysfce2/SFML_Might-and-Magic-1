@@ -7,26 +7,28 @@
 ViewAllCharState::ViewAllCharState(GlobalDataRef gData) 
 : gData(gData)
 {
-	titleText[0].setString(gData -> mStringsDB.getString(ViewAllCharacters));
-	titleText[1].setString(gData -> mStringsDB.getString(PressToViewChar));
-	titleText[2].setString(gData -> mStringsDB.getString(EscToGoBack));
+    sf::Text txt(gData-> mAssets.getFont(Fonts::Main));
+	txt.setFillColor(sf::Color(255, 255, 255));
+
 	int ChrSize [] = {30, 25, 25}; //font sizes	
 	int textX [] = {150, 100, 150}; //X positions
 	int textY [] = {10, 520, 550}; //Y positions
 
 	for (int i=0; i<3; i++)
 	{
-		titleText[i].setFont(gData-> mAssets.getFont(Fonts::Main));
-		titleText[i].setColor(sf::Color(255, 255, 255));
+        titleText.push_back(txt);
 		titleText[i].setCharacterSize(ChrSize[i]);
-		titleText[i].setPosition(textX[i], textY[i]);
+		titleText[i].setPosition({textX[i], textY[i]});
 	}
+	titleText[0].setString(gData -> mStringsDB.getString(ViewAllCharacters));
+	titleText[1].setString(gData -> mStringsDB.getString(PressToViewChar));
+	titleText[2].setString(gData -> mStringsDB.getString(EscToGoBack));
+
 	for (int i=0; i<18; i++)
 	{
-		charInfoText[i].setFont(gData-> mAssets.getFont(Fonts::Main));
-		charInfoText[i].setColor(sf::Color(255, 255, 255));
+		charInfoText.push_back(txt);
 		charInfoText[i].setCharacterSize(16);
-		charInfoText[i].setPosition(10, 50+25*i);
+		charInfoText[i].setPosition({10, 50+25*i});
 	}
 }
 
@@ -36,13 +38,13 @@ void ViewAllCharState::init() {
 
 void ViewAllCharState::handleInput(const sf::Event& event)
 {
-	if (event.type == sf::Event::KeyPressed)
+	if (const auto* keyPressed = event.getIf<sf::Event::KeyPressed>())
         {
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+		if (keyPressed->scancode == sf::Keyboard::Scancode::Escape) {
 			gData -> mStates.removeState();
 		}
-		else if ((event.key.code >= sf::Keyboard::A)&&(event.key.code<=sf::Keyboard::Z)) {
-			int num = int (event.key.code);
+		else if ((keyPressed->scancode >= sf::Keyboard::Scancode::A)&&(keyPressed->scancode<=sf::Keyboard::Scancode::Z)) {
+			int num = int (keyPressed->scancode);
 			Character* character = gData-> mGameModel._party._roster.getCharacter(num);
 			if (character != nullptr){
 				gData -> mStates.addState(StatePtr (new CharacterDetailState(gData, character)));

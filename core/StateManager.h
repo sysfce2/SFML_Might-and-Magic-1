@@ -25,7 +25,7 @@ class StateManager
 		
 		void	update(float dt);
       	void	draw(float dt);
-		void	handleInput(sf::Event& event);
+		void	handleInput(const sf::Event& event);
 
 		void	addState(StatePtr state);
         void    replaceState(StatePtr state);

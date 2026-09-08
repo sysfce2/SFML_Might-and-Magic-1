@@ -5,7 +5,7 @@
 
 
 Application::Application(){
-    gData -> mWindow.create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), APP_NAME, sf::Style::Close);
+    gData -> mWindow.create(sf::VideoMode({SCREEN_WIDTH, SCREEN_HEIGHT}), APP_NAME, sf::Style::Close);
     gData -> mWindow.setKeyRepeatEnabled(false);	
     loadResources();
     gData -> mStates.addState(StatePtr(new TitleState (gData))); //push TitleState in stack
@@ -37,14 +37,14 @@ void Application::run(){
 
 
 void Application::processInput(){
-	sf::Event event;
+	//sf::Event event;
 
-	while (gData -> mWindow.pollEvent(event)) {
- 		if (event.type == sf::Event::Closed) {
+	while (const std::optional event = (gData -> mWindow.pollEvent())) {
+ 		if (event->is<sf::Event::Closed>()) {
 			gData -> mWindow.close();
 		}
         	//pass event into StateStack
-        	gData -> mStates.handleInput(event);
+        	gData -> mStates.handleInput(*event);
 	}
 }
 

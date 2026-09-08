@@ -29,5 +29,5 @@ class MazeRender
 		int get2Bits(int value, DIRECTION direction);
        	sf::Texture _textures[18];
        	sf::Texture _mapTextures[3];
-       	sf::Sprite _sprite;
+//       	sf::Sprite _sprite;
 };

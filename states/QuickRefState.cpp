@@ -7,6 +7,15 @@
 QuickRefState::QuickRefState(GlobalDataRef gData) 
 : gData(gData)
 {
+    sf::Text txt(gData-> mAssets.getFont(Fonts::Main));
+	txt.setFillColor(sf::Color(255, 255, 255));
+	for (int i=0; i<3; i++)	{
+		titleText.push_back(txt);
+	}
+	for (int i=0; i<12; i++)	{
+		charInfoText.push_back(txt);
+	}
+
 	//titleText[0].setString(gData -> mStringsDB.getString(ViewAllCharacters));
 	titleText[1].setString(gData -> mStringsDB.getString(PressToViewChar));
 	titleText[2].setString(gData -> mStringsDB.getString(EscToGoBack));
@@ -15,19 +24,17 @@ QuickRefState::QuickRefState(GlobalDataRef gData)
 	int textY [] = {10, 520, 550}; //Y positions
 
 	for (int i=0; i<3; i++)	{
-		titleText[i].setFont(gData-> mAssets.getFont(Fonts::Main));
-		titleText[i].setColor(sf::Color(255, 255, 255));
 		titleText[i].setCharacterSize(ChrSize[i]);
-		titleText[i].setPosition(textX[i], textY[i]);
+		titleText[i].setPosition({textX[i], textY[i]});
 	}
 	for (int i=0; i<12; i++) {
 		charInfoText[i].setFont(gData-> mAssets.getFont(Fonts::Main));
-		charInfoText[i].setColor(sf::Color(255, 255, 255));
+		charInfoText[i].setFillColor(sf::Color(255, 255, 255));
 		charInfoText[i].setCharacterSize(16);
 	}
 	for (int i=0; i<6; i++)	{
-		charInfoText[i].setPosition(10, 50+25*i);
-		charInfoText[6+i].setPosition(10, 100+25*(6+i));
+		charInfoText[i].setPosition({10, 50+25*i});
+		charInfoText[6+i].setPosition({10, 100+25*(6+i)});
 	}
 }
 
@@ -72,13 +79,13 @@ void QuickRefState::init() {
 
 void QuickRefState::handleInput(const sf::Event& event)
 {
-	if (event.type == sf::Event::KeyPressed)
+	if (const auto* keyPressed = event.getIf<sf::Event::KeyPressed>())
         {
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+		if (keyPressed->scancode == sf::Keyboard::Scancode::Escape) {
 			gData -> mStates.removeState();
 		}
-		else if ((event.key.code >= sf::Keyboard::Num1)&&(event.key.code<=sf::Keyboard::Num6)) {
-			int num = int (event.key.code-27);
+		else if ((keyPressed->scancode >= sf::Keyboard::Scancode::Num1)&&(keyPressed->scancode <=sf::Keyboard::Scancode::Num6)) {
+			int num = int (keyPressed->scancode)-27;
 			Character* character = gData-> mGameModel._party.getCharacter(num);
 			if (character != nullptr){
 				gData -> mStates.addState(StatePtr (new CharacterDetailState(gData, character)));

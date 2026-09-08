@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 
 #include "../core/State.h"
 #include "../core/Application.h"
@@ -22,11 +23,8 @@ class MenuState : public State
 	private:
 		GlobalDataRef   gData;
 
-        sf::Sprite  _background;
+        std::vector<sf::Sprite>  _background;
+		//std::vector<sf::Text>	titleText;
 
-		sf::Text	titleText[1];
-		Button		exitBtn;
-		Button		playBtn;
-		Button		newCharBtn;
-		Button		viewAllBtn;
+        std::vector<Button> _buttons;
 };

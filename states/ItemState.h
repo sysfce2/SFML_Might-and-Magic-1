@@ -30,5 +30,5 @@ class ItemState : public State
 		bool	_actionDone;
 		int	_itemNum;
 
-		sf::Text	_txtLabel[10];
+		std::vector<sf::Text>	_txtLabel;
 };

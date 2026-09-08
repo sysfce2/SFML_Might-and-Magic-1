@@ -19,7 +19,7 @@ class Button
 {
 	public:
 
-			Button();
+			//Button();
 			Button(sf::Sprite sprite, sf::Text text, sf::Vector2f position);
 		
 		void setSize(sf::Vector2f size);
