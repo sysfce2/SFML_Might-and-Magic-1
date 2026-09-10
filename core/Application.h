@@ -18,7 +18,7 @@ struct GlobalAppData
 
 	MultiLangManager	mStringsDB;
 	StateManager		mStates;
-    	GameModel           mGameModel;
+    GameModel           mGameModel;
 };
 
 typedef std::shared_ptr<GlobalAppData> GlobalDataRef;
@@ -35,7 +35,7 @@ class Application
 		void	render(float dt);
 		void	loadResources();
 
-		const float     TimePerFrame =1.0f/60.0f;
+		const float     TimePerFrame = 1.0/60.0;
 		GlobalDataRef	gData  = std::make_shared<GlobalAppData>();
               
 };

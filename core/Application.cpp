@@ -1,7 +1,7 @@
 #include "Application.h"
 #include "../states/TitleState.h"
 #include "../Definitions.h"
-//#include<iostream>
+#include<iostream>
 
 
 Application::Application(){
@@ -16,20 +16,17 @@ Application::Application(){
 void Application::run(){       
 	sf::Clock clock; 
 	float timeSinceLastUpdate = 0; 
-	bool repaint = false;
 
-	while ( !(gData -> mStates.isEmpty()) && (gData -> mWindow.isOpen()) ) 	{         
+	while ( !(gData -> mStates.isEmpty()) && (gData -> mWindow.isOpen()) ) 	{  
+  
 			timeSinceLastUpdate += (clock.restart()).asSeconds(); 
 			while (timeSinceLastUpdate > TimePerFrame) { 
 				timeSinceLastUpdate -= TimePerFrame; 
-				repaint = true; 
-		        	processInput();
-		        	update(TimePerFrame); 
+		        processInput();
+		        update(TimePerFrame); 
 			} 
-			if(repaint) {
-				render(TimePerFrame); 
-				repaint = false;
-		 	}
+
+			render(TimePerFrame); 
 
 			gData -> mStates.processStateChange();
 	}
