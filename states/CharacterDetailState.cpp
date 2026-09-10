@@ -67,7 +67,7 @@ void CharacterDetailState::handleInput(const sf::Event& event)
 			gData -> mStates.removeState();
 		}
 		else if ((keyPressed->scancode >= sf::Keyboard::Scancode::Num1)&&(keyPressed->scancode <=sf::Keyboard::Scancode::Num6)) {
-			_charId = int (keyPressed->scancode) -27;
+			_charId = int (keyPressed->scancode) -26;
 			changeCharacter (_charId);
 		}
 		else if (keyPressed->scancode == sf::Keyboard::Scancode::R) {

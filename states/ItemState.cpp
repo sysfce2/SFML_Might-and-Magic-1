@@ -54,7 +54,7 @@ void ItemState::handleInput(const sf::Event& event)
 			gData -> mStates.removeState();
 		}
 		else if ((_itemActionType=="Remove")&&(keyPressed->scancode >= sf::Keyboard::Scancode::Num1)&&(keyPressed->scancode <= sf::Keyboard::Scancode::Num6)) {
-			int itemNum = int (keyPressed->scancode)-27;
+			int itemNum = int (keyPressed->scancode)-26;
 			_actionDone = (gData->mGameModel.removeItem(_character, itemNum));
 		}
 		else if ((_itemActionType=="Drop")&&(keyPressed->scancode >= sf::Keyboard::Scancode::A)&&(keyPressed->scancode<=sf::Keyboard::Scancode::F)) {
@@ -87,7 +87,7 @@ void ItemState::handleInput(const sf::Event& event)
 			if (_itemTransferID != 0) _itemActionType = "Trade-step2";
 		}
 		else if ((_itemActionType=="Trade-step2")&&(keyPressed->scancode >= sf::Keyboard::Scancode::Num1)&&(keyPressed->scancode<=sf::Keyboard::Scancode::Num6)) {
-			Character* newCharacter = gData->mGameModel._party.getCharacter(int (keyPressed->scancode)-27);
+			Character* newCharacter = gData->mGameModel._party.getCharacter(int (keyPressed->scancode)-26);
 			gData->mGameModel.transferItem(_character,  newCharacter, _itemNum);
 			_actionDone = true;
 		}

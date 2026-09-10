@@ -85,7 +85,7 @@ void QuickRefState::handleInput(const sf::Event& event)
 			gData -> mStates.removeState();
 		}
 		else if ((keyPressed->scancode >= sf::Keyboard::Scancode::Num1)&&(keyPressed->scancode <=sf::Keyboard::Scancode::Num6)) {
-			int num = int (keyPressed->scancode)-27;
+			int num = int (keyPressed->scancode)-26;
 			Character* character = gData-> mGameModel._party.getCharacter(num);
 			if (character != nullptr){
 				gData -> mStates.addState(StatePtr (new CharacterDetailState(gData, character)));
