@@ -38,8 +38,7 @@ void Face::setCallback(std::function<void(int)> callback)
 
 void Face::handleInput()
 {
-/*
-	if (isClicked (sf::Mouse::Left)){
+	if (isClicked (sf::Mouse::Button::Left)){
 		//mCallback(_number);
 		//std::cout<<_number<<std::endl;
 		Character* character = _gData-> mGameModel._party.getCharacter(_number);
@@ -47,7 +46,6 @@ void Face::handleInput()
 			_gData -> mStates.addState(StatePtr (new CharacterDetailState(_gData, character)));
 		}
 	}
-*/
 }
 
 bool Face::isClicked(sf::Mouse::Button button)
@@ -69,7 +67,7 @@ bool Face::isClicked(sf::Mouse::Button button)
 void Face::draw()
 {
 	//window.draw(mSprite);
-	//window->draw(mShape);
+	window->draw(mShape);
 	//window->draw(mText);
 }
 

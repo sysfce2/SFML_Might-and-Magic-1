@@ -15,10 +15,10 @@ class CharacterDetailState : public State
 	public:
 		CharacterDetailState (GlobalDataRef gData, Character* currentCharacter);
 
-        	void init();
-       		void handleInput(const sf::Event& event);
-        	void update (float dt);
-        	void draw(float dt );
+        void init();
+       	void handleInput(const sf::Event& event);
+        void update (float dt);
+        void draw(float dt );
 		void stop();
 
 		void changeCharacter (Character* newCharacter);
@@ -29,7 +29,7 @@ class CharacterDetailState : public State
 		GlobalDataRef   gData;
 		Character* _character;
 		int _charId;
-        	//sf::Sprite  _background;
+        //sf::Sprite  _background;
 
 		std::vector<sf::Text>	_txtLabel;
 };

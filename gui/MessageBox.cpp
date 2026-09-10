@@ -3,8 +3,10 @@
 
 MessageBox::MessageBox(sf::RenderWindow* target, int viewWidth, int viewHeight, const sf::Font* font)
 :window (target)
-,mText(*font)
 {
+    sf::Text txt(*font);
+    mText.push_back(txt);
+
 	float X, Y;
 	X = viewWidth/2 - (5/14.0)*viewWidth;
 	Y= viewHeight - 0.2*viewHeight;
@@ -18,30 +20,24 @@ MessageBox::MessageBox(sf::RenderWindow* target, int viewWidth, int viewHeight, 
 	mShape.setOutlineColor(sf::Color::Green);
 	mShape.setOutlineThickness(2);
 
-	mText.setPosition({viewWidth/2.0 ,mShape.getPosition().y});
-	centerOrigin(mText);
+	mText[0].setPosition({viewWidth/2.0 ,mShape.getPosition().y});
+	centerOrigin(mText[0]);
 
 }
-
-/*
-void MessageBox::setFont(sf::Font* font){
-	mText.setFont(*font);
-}
-*/
 
 void MessageBox::setTextString(sf::String str){
-	if (str != "")	mText.setString(str);
-    centerOrigin(mText);
+	if (str != "")	mText[0].setString(str);
+    centerOrigin(mText[0]);
 }
 
 void MessageBox::clean(){
-	mText.setString("");
+	mText[0].setString("");
 }
 
 void MessageBox::draw()
 {
 	//window.draw(mSprite);
 	window->draw(mShape);
-	window->draw(mText);
+	window->draw(mText[0]);
 }
 

@@ -1,14 +1,14 @@
 #pragma once
 
+#include <vector>
 #include "SFML/Graphics.hpp"
 
 class MessageBox
 {
 	public:
 
-			MessageBox(sf::RenderWindow* target, int viewWidth, int viewHeight, const sf::Font* font);
+		MessageBox(sf::RenderWindow* target, int viewWidth, int viewHeight, const sf::Font* font);
 
-		//void setFont(sf::Font* font);					
 		void setTextString(sf::String str);
 		void draw();
 
@@ -17,6 +17,6 @@ class MessageBox
 
 	private:
 		sf::RenderWindow* 	window;
-		sf::Text			mText;
+		std::vector<sf::Text>   mText;
 		sf::RectangleShape	mShape;
 };

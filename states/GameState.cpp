@@ -7,7 +7,7 @@
 GameState::GameState(GlobalDataRef gData, int townId) 
 : gData(gData)
 , _mazeRender(&(gData -> mWindow), gData -> mWindow.getSize().x,  gData -> mWindow.getSize().y)
-//, _gui(&(gData -> mWindow), gData)
+, _gui(&(gData -> mWindow), gData)
 {
 	_mode = STANDING;
 	_startTownId = townId;	
@@ -19,7 +19,6 @@ GameState::GameState(GlobalDataRef gData, int townId)
 void GameState::init() {
 ///////////////////
 
-    std::cout<<"gm init"<<std::endl;
 	gData -> mGameModel.selectMap(_startTownId);
 	_mazeRender.chooseMaze(gData -> mGameModel._map.getWalls(), _startTownId);
 	_xPos = (gData -> mGameModel.getPosX()) +0.5;
@@ -47,7 +46,7 @@ void GameState::handleInput(const sf::Event& event)
 			return;
 		}
 	}
-	//_gui.handleInput();
+	_gui.handleInput();
 }
 
 void GameState::update (float dt)
@@ -66,7 +65,7 @@ void GameState::update (float dt)
 			_mode = STANDING; 
 			if(_turnDirection == -1)	{gData -> mGameModel.turnRight();}
 			else if (_turnDirection == 1)	{gData -> mGameModel.turnLeft();}
-			//_gui.makeStep();
+			_gui.makeStep();
 		}
 		return;
 	}
@@ -80,7 +79,7 @@ void GameState::update (float dt)
 			//else if (deltaMove == -1) {gData -> mGameModel.moveBackward();}
 			gData -> mGameModel.setPosition (_targetX, _targetY);
 			_mazeRender.chooseMaze(gData -> mGameModel._map.getWalls(), gData -> mGameModel.getMapId());
-			//_gui.makeStep();
+			_gui.makeStep();
 		}
 		return;
 	}
@@ -89,13 +88,13 @@ void GameState::update (float dt)
 	_yPos = (gData -> mGameModel.getPosY()) +0.5;
 	directionToVector(gData -> mGameModel.getDirection());
 
-	//_gui.update();
+	_gui.update();
 }
 
 void GameState::draw(float dt) {
 	//_mazeRender.render(_xPos, _yPos, _angle);
 	_mazeRender.render(_xPos, _yPos, _dirX, _dirY, _planeX, _planeY);
-	//_gui.draw();
+	_gui.draw();
 }
 
 void GameState::turn (int turnDir){
