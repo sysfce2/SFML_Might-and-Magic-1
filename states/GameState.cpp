@@ -11,7 +11,7 @@ GameState::GameState(GlobalDataRef gData, int townId)
 {
 	_mode = STANDING;
 	_startTownId = townId;	
-	//gData -> mAssets.loadTexture(Textures::MenuButton, "media/images/gui/Button.png");
+	gData -> mAssets.loadTexture(Textures::Sky, "media/images/sky.png");
  
 	gData -> mMusic.play(Music::TownTheme);
 }
@@ -60,6 +60,10 @@ void GameState::update (float dt)
       		_planeX = _planeX * cos(ANGLE_STEP) - _turnDirection*_planeY * sin(ANGLE_STEP);
       		_planeY = _turnDirection*oldPlaneX * sin(ANGLE_STEP) + _planeY * cos(ANGLE_STEP);
 
+            if (_dirX != 0) {_angle = (int)(std::atan2(_dirY, _dirX)*180/M_PI);}
+            else {_angle = 90*_dirY;}
+            if (_angle <0) {_angle +=360;}
+
 		_movingCounter--;
 		if (_movingCounter<=0) {
 			_mode = STANDING; 
@@ -92,7 +96,7 @@ void GameState::update (float dt)
 }
 
 void GameState::draw(float dt) {
-	//_mazeRender.render(_xPos, _yPos, _angle);
+	_mazeRender.drawSky(_angle);
 	_mazeRender.render(_xPos, _yPos, _dirX, _dirY, _planeX, _planeY);
 	_gui.draw();
 }
@@ -128,8 +132,8 @@ void GameState::move (int deltaMove){
 }
 
 void GameState::directionToVector(const DIRECTION dir){
-	if (dir==E) {_dirX = 1; _dirY = 0; _planeX = 0; _planeY = -FOV;};
-	if (dir==N) {_dirX = 0; _dirY = 1; _planeX = FOV; _planeY = 0;};
-	if (dir==W) {_dirX = -1; _dirY = 0; _planeX = 0; _planeY = FOV;};
-	if (dir==S) {_dirX = 0; _dirY = -1; _planeX = -FOV; _planeY = 0;};
+	if (dir==E) {_dirX = 1; _dirY = 0; _planeX = 0; _planeY = -FOV; _angle = 0;};
+	if (dir==N) {_dirX = 0; _dirY = 1; _planeX = FOV; _planeY = 0; _angle = 90;};
+	if (dir==W) {_dirX = -1; _dirY = 0; _planeX = 0; _planeY = FOV; _angle = 180;};
+	if (dir==S) {_dirX = 0; _dirY = -1; _planeX = -FOV; _planeY = 0; _angle = 270;};
 }

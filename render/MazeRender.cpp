@@ -41,11 +41,14 @@ MazeRender::MazeRender (sf::RenderWindow* target, int viewWidth, int viewHeight)
     res= _textures[16].loadFromFile("media/images/walls/wall17.png"); 
     res= _textures[17].loadFromFile("media/images/walls/wall18.png"); 
 
+    res= _skyTexture.loadFromFile("media/images/sky.png"); 
+    _skyTexture.setRepeated(true); 
 }
 
 void MazeRender::chooseMaze (std::vector<unsigned int> maze, int mapId){
 	_walls = maze;
 	_mapId = mapId;
+    _isSurface = (_mapId>=14)&&(_mapId<=33);
     _mapTextures[0] = _textures[ mapSpriteData [0][_mapId] -1]; 
     _mapTextures[1] = _textures[ mapSpriteData [1][_mapId] -1]; 
     _mapTextures[2] = _textures[ mapSpriteData [2][_mapId] -1]; 
@@ -65,15 +68,13 @@ void MazeRender::render (float posX, float posY, float dirX, float dirY, float p
 
 	DIRECTION wallDir;
 
-
-
 	int stepX, stepY;
 	float rayDirX, rayDirY, deltaDistX, deltaDistY, sideDistX, sideDistY;
 
 
     sf::Sprite _sprite(_mapTextures[0]);
 
-	for (int scanLine=0; scanLine<=_viewWidth; scanLine++){
+ 	for (int scanLine=0; scanLine<=_viewWidth; scanLine++){
 		float scanX = (2.0* scanLine) / _viewWidth - 1;
 		rayDirX = _dirX + _planeX * scanX;
 		rayDirY = _dirY + _planeY * scanX;
@@ -160,3 +161,13 @@ void MazeRender::render (float posX, float posY, float dirX, float dirY, float p
 	}
 
 }
+
+void MazeRender::drawSky(int angle){
+    if (!_isSurface) return;
+    sf::Sprite _skySprite(_skyTexture);
+    int skyOffset = (int)_viewWidth * angle / 360;
+    _skySprite.setTextureRect(sf::IntRect({skyOffset, 0}, {_viewWidth, _viewHeight/2})); 
+    _window->draw(_skySprite);
+    
+}
+

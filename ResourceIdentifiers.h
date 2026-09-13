@@ -17,6 +17,7 @@ namespace Textures {
 		MenuButton,
 		InstructionScroll,
         Face,
+        Sky
 	};
 }
 

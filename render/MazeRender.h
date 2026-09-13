@@ -15,6 +15,7 @@ class MazeRender
 		void chooseMaze (std::vector<unsigned int> maze,  int mapId);
 		void render(float posX, float posY, float dirX, float dirY, float planeX, float planeY);
         void update(float dt);
+        void drawSky(int angle);
 
 	private:
 		const float VIEW_SCALE = 0.4;	
@@ -23,11 +24,14 @@ class MazeRender
 		int _viewWidth, _viewHeight;
 		int _mapId;
 		int wallSpriteId;
+        bool _isSurface = false;
 		sf::RenderWindow* _window;
 		std::vector <unsigned int> _walls;
 
 		int get2Bits(int value, DIRECTION direction);
+
        	sf::Texture _textures[18];
        	sf::Texture _mapTextures[3];
-//       	sf::Sprite _sprite;
+        sf::Texture _skyTexture;
+      	//sf::Sprite _skySprite;
 };
